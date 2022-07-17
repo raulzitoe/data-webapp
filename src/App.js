@@ -10,8 +10,8 @@ function App() {
           paddingBottom: "1rem",
         }}
       >
-        <Link to="/graph">Graph Screen</Link> |{" "}
-        <Link to="/table">Table Screen</Link>
+        <Link to="/eq-works-webapp/graph">Graph Screen</Link> |{" "}
+        <Link to="/eq-works-webapp/table">Table Screen</Link>
       </nav>
       <Outlet />
     </div>

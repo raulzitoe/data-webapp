@@ -15,9 +15,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />} >
-        <Route path="graph" element={<GraphScreen />} />
-        <Route path="table" element={<TableScreen />} />
+      <Route path="/eq-works-webapp" element={<App />} >
+        <Route path="/eq-works-webapp/graph" element={<GraphScreen />} />
+        <Route path="/eq-works-webapp/table" element={<TableScreen />} />
       </Route>
     </Routes>
     
