@@ -1,18 +1,12 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import { Outlet, Link } from "react-router-dom";
+import NavBar from "./NavBar";
 
 function App() {
   return (
     <div>
-      <h1>EQ Works Webapp</h1>
-      <nav
-        style={{
-          borderBottom: "solid 1px",
-          paddingBottom: "1rem",
-        }}
-      >
-        <Link to="/eq-works-webapp/graph">Graph Screen</Link> |{" "}
-        <Link to="/eq-works-webapp/table">Table Screen</Link>
-      </nav>
+      <NavBar />
       <Outlet />
     </div>
   );

@@ -1,143 +1,44 @@
-import { useEffect, useMemo, useState } from "react";
-import { Line } from "react-chartjs-2";
-import { Chart as ChartJS } from "chart.js/auto";
-import axios from "axios";
+import CardHeader from "react-bootstrap/esm/CardHeader";
+import GraphDaily from "../components/GraphDaily";
+import GraphHourly from "../components/GraphHourly";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import { useState } from "react";
 
 export default function GraphScreen() {
-  const [stats, setStats] = useState([]);
+  const [userChoice, setUserChoice] = useState("stats");
 
-  const fetchStats = async () => {
-    const response = await axios
-      .get("https://gelatinous-crystalline-guppy.glitch.me/stats/daily")
-      .catch((err) => console.log(err));
-
-    if (response) {
-      const responseData = response.data;
-
-      console.log("Stats: ", responseData);
-      setStats(responseData);
-    }
-  };
-
-  var data = {
-      labels: stats.map((x) => new Date(x.date).toLocaleDateString('en-US')),
-      datasets: [
-        {
-          label: "Impressions",
-          data: stats.map((x) => x.impressions),
-          backgroundColor: [
-            "rgba(75,192,192,1)",
-            "#ecf0f1",
-            "#50AF95",
-            "#f3ba2f",
-            "#2a71d0",
-          ],
-          borderColor: "black",
-          borderWidth: 1,
-          yAxisID: 'y',
-          pointStyle: 'rect'
-        },
-        {
-          label: "Clicks",
-          data: stats.map((x) => x.clicks),
-          backgroundColor: [
-            "rgba(75,192,192,1)",
-            "#ecf0f1",
-            "#50AF95",
-            "#f3ba2f",
-            "#2a71d0",
-          ],
-          borderColor: "black",
-          borderWidth: 1,
-          yAxisID: 'y1',
-          pointStyle: 'triangle'
-        },
-        {
-          label: "Revenue",
-          data: stats.map((x) => x.revenue),
-          backgroundColor: [
-            "rgba(75,192,192,1)",
-            "#ecf0f1",
-            "#50AF95",
-            "#f3ba2f",
-            "#2a71d0",
-          ],
-          borderColor: "black",
-          borderWidth: 1,
-          yAxisID: 'y2',
-        }
-      ]}
-
-  useEffect(() => {
-    fetchStats();
-  }, []);
-  
-  const chartOptions = {
-    responsive: true,
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-    stacked: false,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Stats - Daily'
-      },
-      legend: {
-        labels: {
-           usePointStyle: true
-        }
-     },
-     tooltip: {
-         usePointStyle: true
-   },
-    },
-    scales: {
-      x: {
-        ticks: {
-            maxRotation: 45,
-            minRotation: 45
-        }
-      },
-      y: {
-        type: 'linear',
-        title: {
-          display: true,
-          text: 'Impressions'
-        },
-        display: true,
-        position: 'left',
-      },
-      y1: {
-        type: 'linear',
-        title: {
-          display: true,
-          text: 'Clicks'
-        },
-        display: true,
-        position: 'left',
-      },
-      y2: {
-        type: 'linear',
-        title: {
-          display: true,
-          text: 'Revenue'
-        },
-        display: true,
-        position: 'left',
-      },
-    }
-  }
-  
-  
-  
   return (
-    <main style={{ padding: "1rem 0" }}>
-      <h2>Graph Screen</h2>
-      <div style={{ width: 700 }}>
-        <Line data={data} options={chartOptions} />
+    <div className="bg-primary p-2">
+      <div className="text-center m-4">
+        <Button className="bg-dark me-4" onClick={() => setUserChoice("stats")}>
+          Statistics
+        </Button>
+        <Button
+          className="bg-dark ms-4"
+          onClick={() => setUserChoice("events")}
+        >
+          Events
+        </Button>
       </div>
-    </main>
+
+      {userChoice === "stats" && (
+        <div>
+          <Card className="shadow-lg m-1 p-5 mx-auto w-75">
+            <Card.Title className="text-center">Stats - Daily</Card.Title>
+            <GraphDaily />
+            <Card.Body className="text-center"> Daily statistics</Card.Body>
+          </Card>
+
+          <Card className="shadow-lg m-5 p-5 mx-auto w-75">
+            <Card.Title className="text-center">Stats - Daily</Card.Title>
+            <GraphHourly />
+            <Card.Body className="text-center"> Daily statistics</Card.Body>
+          </Card>
+        </div>
+      )}
+
+      {userChoice === "events" && <div><h1>Events</h1></div>}
+    </div>
   );
 }

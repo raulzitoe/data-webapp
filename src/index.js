@@ -8,8 +8,8 @@ import {
 } from "react-router-dom";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import GraphScreen from "./routes/graphscreen";
-import TableScreen from "./routes/tablescreen";
+import GraphScreen from "./routes/GraphScreen";
+import TableScreen from "./routes/TableScreen";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

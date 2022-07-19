@@ -64,7 +64,7 @@ export default function TableScreen(props) {
         : [],
     [events]
   );
-  console.log(events)
+  console.log(events);
 
   const tableInstance = useTable({ columns: eventsColumns, data: eventsData });
 
