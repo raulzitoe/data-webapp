@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/eq-works-webapp/static/css/main.c49ef4fc.css",
-    "main.js": "/eq-works-webapp/static/js/main.96ac1f74.js",
+    "main.js": "/eq-works-webapp/static/js/main.c0495b1c.js",
     "static/js/787.28cb0dcd.chunk.js": "/eq-works-webapp/static/js/787.28cb0dcd.chunk.js",
     "index.html": "/eq-works-webapp/index.html",
     "main.c49ef4fc.css.map": "/eq-works-webapp/static/css/main.c49ef4fc.css.map",
-    "main.96ac1f74.js.map": "/eq-works-webapp/static/js/main.96ac1f74.js.map",
+    "main.c0495b1c.js.map": "/eq-works-webapp/static/js/main.c0495b1c.js.map",
     "787.28cb0dcd.chunk.js.map": "/eq-works-webapp/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c49ef4fc.css",
-    "static/js/main.96ac1f74.js"
+    "static/js/main.c0495b1c.js"
   ]
 }
