@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { useTable } from "react-table";
+import { useGlobalFilter, useTable } from "react-table";
+import { Table, Card } from "react-bootstrap";
+import { GlobalFilter } from "../components/GlobalFilter";
 
 export default function TableScreen(props) {
   const [events, setEvents] = useState([]);
@@ -18,55 +20,23 @@ export default function TableScreen(props) {
     }
   };
 
-  const data = useMemo(
-    () => [
-      {
-        date: "may 11",
-        events: "44",
-        hour: "12"
-      },
-      {
-        date: "may 11",
-        events: "44",
-        hour: "12"
-      },
-    ],
-    []
-  );
-
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Date",
-        accessor: "date", // accessor is the "key" in the data
-      },
-      {
-        Header: "Events",
-        accessor: "events",
-      },
-      {
-        Header: "Hour",
-        accessor: "hour",
-      },
-    ],
-    []
-  );
-
   const eventsData = useMemo(() => [...events], [events]);
-  
+
   const eventsColumns = useMemo(
     () =>
       events[0]
-        ? Object.keys(events[0])
-            .map((key) => {
-              return { Header: key, accessor: key };
-            })
+        ? Object.keys(events[0]).map((key) => {
+            return { Header: key, accessor: key };
+          })
         : [],
     [events]
   );
   console.log(events);
 
-  const tableInstance = useTable({ columns: eventsColumns, data: eventsData });
+  const tableInstance = useTable(
+    { columns: eventsColumns, data: eventsData },
+    useGlobalFilter
+  );
 
   const {
     getTableProps,
@@ -74,59 +44,52 @@ export default function TableScreen(props) {
     headerGroups,
     rows,
     prepareRow,
+    preGlobalFilteredRows,
+    setGlobalFilter,
+    state,
   } = tableInstance;
 
-    useEffect(() => {
-      fetchEvents();
-    }, []);
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   return (
-    <main style={{ padding: "1rem 0" }}>
-      <h2>Table Screen</h2>
-      <table {...getTableProps()} style={{ border: "solid 1px blue" }}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps()}
-                  style={{
-                    borderBottom: "solid 3px red",
-                    background: "aliceblue",
-                    color: "black",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {column.render("Header")}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td
-                      {...cell.getCellProps()}
-                      style={{
-                        padding: "10px",
-                        border: "solid 1px gray",
-                        background: "papayawhip",
-                      }}
-                    >
-                      {cell.render("Cell")}
-                    </td>
-                  );
-                })}
+    <div className="bg-primary p-5">
+      <Card className="shadow-lg m-1 p-5 mx-auto">
+        <h2 className="mx-auto mb-4">Table Screen</h2>
+        <GlobalFilter
+          preGlobalFilteredRows={preGlobalFilteredRows}
+          setGlobalFilter={setGlobalFilter}
+          globalFilter={state.globalFilter}
+        />
+        <Table {...getTableProps()} reponsive striped hover size="sm bg-white">
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>
+                    {column.render("Header")}
+                  </th>
+                ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </main>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </Card>
+    </div>
   );
 }
