@@ -27,7 +27,7 @@ function GraphHourly() {
 
   useEffect(() => {
     setEndIndex(Object.keys(stats).length);
-    setValue1([0, Object.keys(stats).length])
+    setValue1([0, Object.keys(stats).length]);
     console.log("END INDEX: ", Object.keys(stats).length);
   }, [Object.keys(stats).length]);
 
