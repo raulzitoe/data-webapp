@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/eq-works-webapp/static/css/main.c49ef4fc.css",
-    "main.js": "/eq-works-webapp/static/js/main.c0495b1c.js",
+    "main.css": "/eq-works-webapp/static/css/main.9248f6ed.css",
+    "main.js": "/eq-works-webapp/static/js/main.5e02ac73.js",
     "static/js/787.28cb0dcd.chunk.js": "/eq-works-webapp/static/js/787.28cb0dcd.chunk.js",
+    "static/media/icon-test.png": "/eq-works-webapp/static/media/icon-test.b9d3cbd1f6e187c01fd1.png",
     "index.html": "/eq-works-webapp/index.html",
-    "main.c49ef4fc.css.map": "/eq-works-webapp/static/css/main.c49ef4fc.css.map",
-    "main.c0495b1c.js.map": "/eq-works-webapp/static/js/main.c0495b1c.js.map",
+    "main.9248f6ed.css.map": "/eq-works-webapp/static/css/main.9248f6ed.css.map",
+    "main.5e02ac73.js.map": "/eq-works-webapp/static/js/main.5e02ac73.js.map",
     "787.28cb0dcd.chunk.js.map": "/eq-works-webapp/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c49ef4fc.css",
-    "static/js/main.c0495b1c.js"
+    "static/css/main.9248f6ed.css",
+    "static/js/main.5e02ac73.js"
   ]
 }
