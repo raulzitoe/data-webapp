@@ -11,7 +11,8 @@ function NavBar() {
         }}
       >
         <Link to="/eq-works-webapp/graph">Graph Screen</Link> |{" "}
-        <Link to="/eq-works-webapp/table">Table Screen</Link>
+        <Link to="/eq-works-webapp/table">Table Screen</Link> |{" "}
+        <Link to="/eq-works-webapp/map">Map Screen</Link>
       </nav>
     </div>
   );
