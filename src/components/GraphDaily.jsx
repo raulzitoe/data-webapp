@@ -5,6 +5,7 @@ import axios from "axios";
 
 function GraphDaily() {
   const [stats, setStats] = useState([]);
+  const [events, setEvents] = useState([]);
 
   const fetchStats = async () => {
     const response = await axios
@@ -19,6 +20,24 @@ function GraphDaily() {
     }
   };
 
+  const fetchEvents = async () => {
+    const response = await axios
+      .get("https://gelatinous-crystalline-guppy.glitch.me/events/daily")
+      .catch((err) => console.log(err));
+
+    if (response) {
+      const responseData = response.data;
+
+      console.log("Events: ", responseData);
+      setEvents(responseData);
+    }
+  };
+
+  useEffect(() => {
+    fetchStats();
+    fetchEvents();
+  }, []);
+
   var data = {
     labels: stats.map((x) => new Date(x.date).toLocaleDateString("en-US")),
     datasets: [
@@ -26,52 +45,51 @@ function GraphDaily() {
         label: "Impressions",
         data: stats.map((x) => x.impressions),
         backgroundColor: [
-          "rgba(75,192,192,1)",
-          "#ecf0f1",
-          "#50AF95",
-          "#f3ba2f",
-          "#2a71d0",
+          "red"
         ],
-        borderColor: "black",
-        borderWidth: 1,
+        borderColor: "red",
+        borderWidth: 2,
         yAxisID: "y",
         pointStyle: "rect",
+        tension: 0.2
       },
       {
         label: "Clicks",
         data: stats.map((x) => x.clicks),
         backgroundColor: [
-          "rgba(75,192,192,1)",
-          "#ecf0f1",
-          "#50AF95",
-          "#f3ba2f",
-          "#2a71d0",
+          "blue"
         ],
-        borderColor: "black",
-        borderWidth: 1,
+        borderColor: "blue",
+        borderWidth: 2,
         yAxisID: "y1",
         pointStyle: "triangle",
+        tension: 0.2
       },
       {
         label: "Revenue",
         data: stats.map((x) => x.revenue),
         backgroundColor: [
-          "rgba(75,192,192,1)",
-          "#ecf0f1",
-          "#50AF95",
-          "#f3ba2f",
-          "#2a71d0",
+          "green"
+        ],
+        borderColor: "green",
+        borderWidth: 2,
+        yAxisID: "y2",
+        tension: 0.2
+      },
+      {
+        label: "Events",
+        data: events.map((x) => x.events),
+        backgroundColor: [
+          "black"
         ],
         borderColor: "black",
-        borderWidth: 1,
-        yAxisID: "y2",
+        borderWidth: 2,
+        yAxisID: "y3",
+        pointStyle: "star",
+        tension: 0.2
       },
     ],
   };
-
-  useEffect(() => {
-    fetchStats();
-  }, []);
 
   const chartOptions = {
     responsive: true,
