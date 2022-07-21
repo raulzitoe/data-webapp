@@ -5,7 +5,7 @@ import logo from "../src/logo.svg";
 
 function NavBar() {
   return (
-    <Navbar bg="light" sticky="top" style={{height: '5vh'}}>
+    <Navbar bg="light" sticky="top" style={{minHeight: '5vh'}} expand="sm">
       <Container className="mx-auto">
         <Navbar.Brand>
         <img

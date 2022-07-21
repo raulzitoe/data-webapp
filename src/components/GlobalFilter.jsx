@@ -13,7 +13,7 @@ export function GlobalFilter({
   }, 300);
 
   return (
-       <TextField id="outlined-basic" label="Search" variant="outlined" className="w-50 mx-auto mb-4" value={value || ""}
+       <TextField id="outlined-basic" label="Search" variant="outlined" className="w-50 mx-auto mb-lg-4" value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
           onChange(e.target.value);

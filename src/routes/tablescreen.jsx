@@ -53,10 +53,14 @@ export default function TableScreen(props) {
     fetchEvents();
   }, []);
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   return (
-    <div className="bg-primary p-5">
-      <Card className="shadow-lg m-1 p-5 mx-auto">
-        <h2 className="mx-auto mb-4">Table Screen</h2>
+    <div className="bg-primary pt-5 pb-5 p-lg-5">
+      <Card className="shadow-lg p-0 p-lg-5 mx-auto">
+        <h2 className="mx-auto mb-2 mt-2 mb-lg-5">Table Screen</h2>
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}
           setGlobalFilter={setGlobalFilter}
@@ -67,8 +71,8 @@ export default function TableScreen(props) {
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
+                  <th {...column.getHeaderProps()} className="ps-3">
+                    {capitalizeFirstLetter(column.render("Header"))}
                   </th>
                 ))}
               </tr>

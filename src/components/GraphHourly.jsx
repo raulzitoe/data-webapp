@@ -3,6 +3,7 @@ import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import axios from "axios";
 import { Slider } from "@mui/material";
+import Spinner from "react-bootstrap/Spinner";
 
 const minDistance = 10;
 
@@ -51,6 +52,8 @@ function GraphHourly() {
 
   const myfilter = (index) => index >= value1[0] && index <= value1[1];
 
+  if (stats && events) {
+  
   var data = {
     labels: stats
       .filter((_, index) => myfilter(index))
@@ -205,6 +208,14 @@ function GraphHourly() {
         </div>
       </div>
     </main>
+  );
+
+}
+
+  return (
+    <div className="mx-auto m-5">
+      <Spinner animation="border" variant="primary" />
+    </div>
   );
 }
 

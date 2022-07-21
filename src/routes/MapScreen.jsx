@@ -12,8 +12,8 @@ function MapScreen() {
 
 
   return (
-    <div className="bg-primary p-4" style={{height: '95vh'}}>
-      <Card className="shadow-lg m-1 mx-auto" style={{height: '100%'}}>
+    <div className="bg-primary pt-1 pb-1 p-lg-5" style={{height: '95vh'}}>
+      <Card className="shadow-lg mx-auto" style={{height: '100%'}}>
       <FormControl className="mx-auto">
       <FormLabel className="mx-auto mt-2"><h4>Metric</h4></FormLabel>
       <RadioGroup
@@ -22,11 +22,12 @@ function MapScreen() {
         name="row-radio-buttons-group"
         onChange={handleChange}
         value={radioChoice}
+        className="m-1 mx-auto"
       >
-        <FormControlLabel value="Impressions" control={<Radio />} label="Impressions" />
-        <FormControlLabel value="Clicks" control={<Radio />} label="Clicks" />
-        <FormControlLabel value="Revenue" control={<Radio />} label="Revenue" />
-        <FormControlLabel value="Events" control={<Radio />} label="Events" />
+        <FormControlLabel className="m-1 mx-auto" value="Impressions" control={<Radio />} label="Impressions" />
+        <FormControlLabel className="m-1 mx-auto" value="Clicks" control={<Radio />} label="Clicks" />
+        <FormControlLabel className="m-1 mx-auto" value="Revenue" control={<Radio />} label="Revenue" />
+        <FormControlLabel className="m-1 mx-auto" value="Events" control={<Radio />} label="Events" />
       </RadioGroup>
     </FormControl>
     <div className="pb-5">

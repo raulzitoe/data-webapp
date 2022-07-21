@@ -8,7 +8,7 @@ export default function GraphScreen() {
   const [userChoice, setUserChoice] = useState("daily");
 
   return (
-    <div className="bg-primary p-2">
+    <div className="bg-primary pt-1">
       <div className="text-center m-4">
         <Button className="bg-dark me-4" onClick={() => setUserChoice("daily")}>
           Daily
@@ -22,8 +22,8 @@ export default function GraphScreen() {
       </div>
 
       {userChoice === "daily" && (
-        <div>
-          <Card className="shadow-lg m-1 p-5 mx-auto w-75">
+        <div className="p-0 pb-5 p-lg-5">
+          <Card className="shadow-lg m-0 m-lg-5 p-0 p-lg-4">
             <Card.Title className="text-center">Graph - Daily</Card.Title>
             <GraphDaily />
             <Card.Body className="text-center"> Daily statistics</Card.Body>
@@ -32,11 +32,11 @@ export default function GraphScreen() {
       )}
 
       {userChoice === "hourly" && (
-        <div className="min-w-100">
-          <Card className="shadow-lg m-1 p-5 mx-auto w-75">
-            <Card.Title className="text-center">Events - Daily</Card.Title>
+        <div className="p-0 pb-5 p-lg-5">
+          <Card className="shadow-lg m-0 m-lg-5 p-0 p-lg-4">
+            <Card.Title className="text-center">Events - Hourly</Card.Title>
             <GraphHourly />
-            <Card.Body className="text-center"> Daily events</Card.Body>
+            <Card.Body className="text-center"> Hourly events</Card.Body>
           </Card>
         </div>
       )}
