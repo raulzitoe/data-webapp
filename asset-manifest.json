@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/eq-works-webapp/static/css/main.9248f6ed.css",
-    "main.js": "/eq-works-webapp/static/js/main.a0ce92c5.js",
+    "main.js": "/eq-works-webapp/static/js/main.16bf6825.js",
     "static/js/787.28cb0dcd.chunk.js": "/eq-works-webapp/static/js/787.28cb0dcd.chunk.js",
     "static/media/icon-test.png": "/eq-works-webapp/static/media/icon-test.b9d3cbd1f6e187c01fd1.png",
     "index.html": "/eq-works-webapp/index.html",
     "static/media/logo.svg": "/eq-works-webapp/static/media/logo.792332758e607ad858ab32051bac85a0.svg",
     "main.9248f6ed.css.map": "/eq-works-webapp/static/css/main.9248f6ed.css.map",
-    "main.a0ce92c5.js.map": "/eq-works-webapp/static/js/main.a0ce92c5.js.map",
+    "main.16bf6825.js.map": "/eq-works-webapp/static/js/main.16bf6825.js.map",
     "787.28cb0dcd.chunk.js.map": "/eq-works-webapp/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9248f6ed.css",
-    "static/js/main.a0ce92c5.js"
+    "static/js/main.16bf6825.js"
   ]
 }
