@@ -1,20 +1,40 @@
 import { Link } from "react-router-dom";
+import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import logo from "../src/logo.svg";
 
 function NavBar() {
   return (
-    <div>
-      <h1>EQ Works Webapp</h1>
-      <nav
-        style={{
-          borderBottom: "solid 1px",
-          paddingBottom: "1rem",
-        }}
-      >
-        <Link to="/eq-works-webapp/graph">Graph Screen</Link> |{" "}
-        <Link to="/eq-works-webapp/table">Table Screen</Link> |{" "}
-        <Link to="/eq-works-webapp/map">Map Screen</Link>
-      </nav>
-    </div>
+    <Navbar bg="light" sticky="top" style={{height: '5vh'}}>
+      <Container className="mx-auto">
+        <Navbar.Brand>
+        <img
+              alt=""
+              src={logo}
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+            />{' '}
+          EQ Works Web App</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <LinkContainer to="/eq-works-webapp/">
+              <Nav.Link>Home</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/eq-works-webapp/graph">
+              <Nav.Link>Graph</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/eq-works-webapp/table">
+              <Nav.Link>Table</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/eq-works-webapp/map">
+              <Nav.Link>Map</Nav.Link>
+            </LinkContainer>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
 
