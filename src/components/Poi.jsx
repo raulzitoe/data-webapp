@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import L from "leaflet";
 import useSupercluster from "use-supercluster";
-import { Marker, useMap, Popup } from "react-leaflet";
+import { Marker, useMap, Popup, Circle, Tooltip } from "react-leaflet";
 import "./Poi.css";
 import iconMarker from "../icon-test.png";
 
@@ -22,7 +22,7 @@ const pointIcon = new L.Icon({
   iconSize: [25, 25],
 });
 
-function Poi({ data }) {
+function Poi({ data, radioChoice, eventsData, statsData }) {
   const maxZoom = 22;
   const [bounds, setBounds] = useState(null);
   const [zoom, setZoom] = useState(12);
@@ -56,13 +56,18 @@ function Poi({ data }) {
 
   const points = data.map((poi) => ({
     type: "Feature",
-    properties: { cluster: false },
+    properties: {
+      cluster: false,
+      name: poi.name,
+      choice: radioChoice,
+      clicks: statsData.find((x) => x.poi_id === poi.poi_id).clicks,
+      impressions: statsData.find((x) => x.poi_id === poi.poi_id).impressions,
+      revenue: statsData.find((x) => x.poi_id === poi.poi_id).revenue,
+      events: eventsData.find((x) => x.poi_id === poi.poi_id).events,
+    },
     geometry: {
       type: "Point",
-      coordinates: [
-        parseFloat(poi.lon),
-        parseFloat(poi.lat),
-      ],
+      coordinates: [parseFloat(poi.lon), parseFloat(poi.lat)],
     },
   }));
 
@@ -104,15 +109,34 @@ function Poi({ data }) {
           );
         }
 
+        var choiceValue = cluster.properties.clicks;
+
+        switch (radioChoice) {
+          case "Impressions":
+            choiceValue = cluster.properties.impressions;
+            break;
+          case "Revenue":
+            choiceValue = parseFloat(cluster.properties.revenue).toFixed(2);
+            break;
+          case "Events":
+            choiceValue = cluster.properties.events;
+            default: choiceValue = cluster.properties.clicks;
+        }
+
         return (
-          <Marker
-            position={[latitude, longitude]}
-            icon={pointIcon}
-          >
-            <Popup>
-              This is a POI!
-            </Popup>
-          </Marker>
+          <div>
+            <Marker position={[latitude, longitude]} icon={pointIcon} key={`poi-${cluster.properties.name}`}>
+              <Popup>{cluster.properties.name}</Popup>
+              {/* <Tooltip>{cluster.properties.name}</Tooltip> */}
+              <Tooltip>{cluster.properties.name} <br/>{radioChoice} : {choiceValue}</Tooltip>
+            </Marker>
+
+            <Circle
+              center={[latitude, longitude]}
+              pathOptions={{ fillColor: "red" }}
+              radius={choiceValue/100}
+            />
+          </div>
         );
       })}
     </>

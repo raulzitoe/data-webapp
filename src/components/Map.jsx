@@ -1,28 +1,65 @@
 import { MapContainer, TileLayer } from "react-leaflet";
-import ShowCrimes from "./Poi";
+import Poi from "./Poi";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
 
-function Map() {
-  const [data, setData] = useState([]);
-  const [success, setSuccess] = useState(false);
+function Map({radioChoice}) {
+  const [data, setData] = useState();
+  const [statsData, setStatsData] = useState();
+  const [eventsData, setEventsData] = useState();
+
+  console.log(radioChoice);
 
   const fetchData = async () => {
-    const response = await fetch(
-      "https://gelatinous-crystalline-guppy.glitch.me/poi"
-    );
-    const mydata = await response.json();
-    console.log(mydata);
-    setData(mydata);
-    setSuccess(true);
+    const response = await axios
+      .get("https://gelatinous-crystalline-guppy.glitch.me/poi")
+      .catch((err) => console.log(err));
+      
+    if (response) { 
+      setData(response.data);
+    }
+  };
+
+  const fetchStats = async () => {
+    const response = await axios
+      .get("https://gelatinous-crystalline-guppy.glitch.me/stats/sum")
+      .catch((err) => console.log(err));
+
+    if (response) {
+      const responseData = response.data;
+
+      console.log("Stats: ", responseData);
+      setStatsData(responseData);
+    }
+  };
+
+  const fetchEvents = async () => {
+    const response = await axios
+      .get("https://gelatinous-crystalline-guppy.glitch.me/events/sum")
+      .catch((err) => console.log(err));
+
+    if (response) {
+      const responseData = response.data;
+
+      console.log("Events: ", responseData);
+      setEventsData(responseData);
+    }
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  if (success) {
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  if (data && statsData && eventsData) {
     return (
       <MapContainer
         style={{ height: "700px", width: "100%" }}
@@ -33,14 +70,14 @@ function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        <ShowCrimes data={data} />
+        <Poi data={data} radioChoice={radioChoice} eventsData={eventsData} statsData={statsData}/>
       </MapContainer>
     );
   }
 
   return (
     <div>
-      <h1>failed</h1>
+      <h1>Loading</h1>
     </div>
   );
 }
