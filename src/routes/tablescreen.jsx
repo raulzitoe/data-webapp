@@ -62,7 +62,7 @@ export default function TableScreen(props) {
           setGlobalFilter={setGlobalFilter}
           globalFilter={state.globalFilter}
         />
-        <Table {...getTableProps()} reponsive striped hover size="sm bg-white">
+        <Table {...getTableProps()} reponsive="true" striped hover size="sm bg-white">
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
