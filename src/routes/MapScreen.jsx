@@ -1,6 +1,7 @@
 import Map from "../components/Map";
 import {Radio, RadioGroup, FormControlLabel, FormControl, FormLabel} from '@mui/material';
 import React, { useState } from "react";
+import { Card } from "react-bootstrap";
 
 function MapScreen() {
   const [radioChoice, setRadioChoice] = useState('Clicks');
@@ -11,9 +12,10 @@ function MapScreen() {
 
 
   return (
-    <div>
-      <FormControl>
-      <FormLabel id="demo-row-radio-buttons-group-label">Metric</FormLabel>
+    <div className="bg-primary p-4" style={{height: '95vh'}}>
+      <Card className="shadow-lg m-1 mx-auto" style={{height: '100%'}}>
+      <FormControl className="mx-auto">
+      <FormLabel className="mx-auto mt-2"><h4>Metric</h4></FormLabel>
       <RadioGroup
         row
         aria-labelledby="demo-row-radio-buttons-group-label"
@@ -27,7 +29,11 @@ function MapScreen() {
         <FormControlLabel value="Events" control={<Radio />} label="Events" />
       </RadioGroup>
     </FormControl>
-      <Map radioChoice={radioChoice} />
+    <div className="pb-5">
+      <Map radioChoice={radioChoice}/>
+    </div>
+      
+      </Card>
     </div>
   
   )

@@ -62,7 +62,7 @@ function Map({radioChoice}) {
   if (data && statsData && eventsData) {
     return (
       <MapContainer
-        style={{ height: "700px", width: "100%" }}
+        style={{ height: "80vh", width: "100%" }}
         center={[43.6824, -79.4089]}
         zoom={9}
       >
