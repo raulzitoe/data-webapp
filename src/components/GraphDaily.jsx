@@ -41,11 +41,14 @@ function GraphDaily() {
 
   if (stats && events) {
     var data = {
-      labels: stats.map((x) => new Date(x.date).toLocaleDateString("en-US")),
       datasets: [
         {
           label: "Impressions",
-          data: stats.map((x) => x.impressions),
+          data: stats.map((x) => ({
+            x: new Date(x.date),
+            y: x.impressions,
+          })),
+
           backgroundColor: ["red"],
           borderColor: "red",
           borderWidth: 2,
@@ -55,7 +58,10 @@ function GraphDaily() {
         },
         {
           label: "Clicks",
-          data: stats.map((x) => x.clicks),
+          data: stats.map((x) => ({
+            x: new Date(x.date),
+            y: x.clicks,
+          })),
           backgroundColor: ["blue"],
           borderColor: "blue",
           borderWidth: 2,
@@ -65,7 +71,10 @@ function GraphDaily() {
         },
         {
           label: "Revenue",
-          data: stats.map((x) => x.revenue),
+          data: stats.map((x) => ({
+            x: new Date(x.date),
+            y: x.revenue,
+          })),
           backgroundColor: ["green"],
           borderColor: "green",
           borderWidth: 2,
@@ -74,7 +83,10 @@ function GraphDaily() {
         },
         {
           label: "Events",
-          data: events.map((x) => x.events),
+          data: events.map((x) => ({
+            x: new Date(x.date),
+            y: x.events,
+          })),
           backgroundColor: ["black"],
           borderColor: "black",
           borderWidth: 2,
@@ -93,10 +105,6 @@ function GraphDaily() {
       },
       stacked: false,
       plugins: {
-        //   title: {
-        //     display: true,
-        //     text: "Stats - Daily",
-        //   },
         legend: {
           labels: {
             usePointStyle: true,
@@ -108,9 +116,16 @@ function GraphDaily() {
       },
       scales: {
         x: {
+          type: "time",
           ticks: {
             maxRotation: 45,
             minRotation: 45,
+          },
+          time: {
+            displayFormats: {
+              hour: "DD/MM/YYYY",
+              day: "DD/MM/YYYY",
+            },
           },
         },
         y: {
