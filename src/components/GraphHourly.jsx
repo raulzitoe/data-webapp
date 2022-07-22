@@ -2,16 +2,19 @@ import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import axios from "axios";
-import { Slider } from "@mui/material";
 import Spinner from "react-bootstrap/Spinner";
-
-const minDistance = 10;
+import "chartjs-adapter-moment";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
 
 function GraphHourly() {
   const [stats, setStats] = useState([]);
   const [events, setEvents] = useState([]);
-  const [endIndex, setEndIndex] = useState(0);
-  const [value1, setValue1] = useState([20, 37]);
+  const [startDate, setStartDate] = useState(new Date("2016-01-01T23:35:01"));
+  const [endDate, setEndDate] = useState(new Date("2017-08-18T21:11:54"));
 
   const fetchStats = async () => {
     const response = await axios
@@ -25,12 +28,6 @@ function GraphHourly() {
       setStats(responseData);
     }
   };
-
-  useEffect(() => {
-    setEndIndex(Object.keys(stats).length);
-    setValue1([0, Object.keys(stats).length]);
-    console.log("END INDEX: ", Object.keys(stats).length);
-  }, [Object.keys(stats).length]);
 
   const fetchEvents = async () => {
     const response = await axios
@@ -50,167 +47,211 @@ function GraphHourly() {
     fetchEvents();
   }, []);
 
-  const myfilter = (index) => index >= value1[0] && index <= value1[1];
+  const filterDate = (x) =>
+    dateWithHours(x.hour, new Date(x.date)) >= startDate &&
+    dateWithHours(x.hour, new Date(x.date)) <= endDate;
+
+  function dateWithHours(numOfHours, date) {
+    date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
+    return date;
+  }
 
   if (stats && events) {
-  
-  var data = {
-    labels: stats
-      .filter((_, index) => myfilter(index))
-      .map(
-        (x) => new Date(x.date).toLocaleDateString("en-US") + " Hour: " + x.hour
-      ),
-    datasets: [
-      {
-        label: "Impressions",
-        data: stats
-          .filter((_, index) => myfilter(index))
-          .map((x) => x.impressions),
-        backgroundColor: [
-          "red"
-        ],
-        borderColor: "red",
-        borderWidth: 1,
-        yAxisID: "y",
-        pointStyle: "rect",
-        tension: 0.2
-      },
-      {
-        label: "Clicks",
-        data: stats.filter((_, index) => myfilter(index)).map((x) => x.clicks),
-        backgroundColor: [
-          "blue"
-        ],
-        borderColor: "blue",
-        borderWidth: 1,
-        yAxisID: "y1",
-        pointStyle: "triangle",
-        tension: 0.2
-      },
-      {
-        label: "Revenue",
-        data: stats.filter((_, index) => myfilter(index)).map((x) => x.revenue),
-        backgroundColor: [
-          "green"
-        ],
-        borderColor: "green",
-        borderWidth: 1,
-        yAxisID: "y2",
-        tension: 0.2
-      },
-      {
-        label: "Events",
-        data: events.filter((_, index) => myfilter(index)).map((x) => x.events),
-        backgroundColor: [
-          "black"
-        ],
-        borderColor: "black",
-        borderWidth: 1,
-        yAxisID: "y3",
-        pointStyle: "star",
-        tension: 0.2
-      },
-    ],
-  };
+    var data = {
+      datasets: [
+        {
+          label: "Impressions",
+          data: stats
+            .filter((value) => filterDate(value))
+            .map((x) => ({
+              x: dateWithHours(x.hour, new Date(x.date)),
+              y: x.impressions,
+            })),
+          backgroundColor: ["red"],
+          borderColor: "red",
+          borderWidth: 1,
+          yAxisID: "y",
+          pointStyle: "rect",
+          tension: 0.2,
+        },
+        {
+          label: "Clicks",
+          data: stats
+            .filter((value) => filterDate(value))
+            .map((x) => ({
+              x: dateWithHours(x.hour, new Date(x.date)),
+              y: x.clicks,
+            })),
+          backgroundColor: ["blue"],
+          borderColor: "blue",
+          borderWidth: 1,
+          yAxisID: "y1",
+          pointStyle: "triangle",
+          tension: 0.2,
+        },
+        {
+          label: "Revenue",
+          data: stats
+            .filter((value) => filterDate(value))
+            .map((x) => ({
+              x: dateWithHours(x.hour, new Date(x.date)),
+              y: x.revenue,
+            })),
+          backgroundColor: ["green"],
+          borderColor: "green",
+          borderWidth: 1,
+          yAxisID: "y2",
+          tension: 0.2,
+        },
+        {
+          label: "Events",
+          data: events
+            .filter((value) => filterDate(value))
+            .map((x) => ({
+              x: dateWithHours(x.hour, new Date(x.date)),
+              y: x.events,
+            })),
+          backgroundColor: ["black"],
+          borderColor: "black",
+          borderWidth: 1,
+          yAxisID: "y3",
+          pointStyle: "star",
+          tension: 0.2,
+        },
+      ],
+    };
 
-  const chartOptions = {
-    responsive: true,
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
-    stacked: false,
-    plugins: {
-      //   title: {
-      //     display: true,
-      //     text: "Stats - Hourly",
-      //   },
-      legend: {
-        labels: {
+    console.log(data);
+
+    const chartOptions = {
+      type: "line",
+      responsive: true,
+      interaction: {
+        mode: "index",
+        intersect: false,
+      },
+      stacked: false,
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+          },
+        },
+        tooltip: {
+          mode: "x",
           usePointStyle: true,
         },
       },
-      tooltip: {
-        usePointStyle: true,
-      },
-    },
-    scales: {
-      x: {
-        ticks: {
-          maxRotation: 45,
-          minRotation: 45,
+      scales: {
+        x: {
+          type: "time",
+          ticks: {
+            maxRotation: 45,
+            minRotation: 45,
+          },
+          time: {
+            displayFormats: {
+              hour: "DD/MM/YYYY ha",
+              day: "DD/MM/YYYY ha",
+            },
+          },
         },
-      },
-      y: {
-        type: "linear",
-        title: {
+        y: {
+          type: "linear",
+          title: {
+            display: true,
+            text: "Impressions",
+          },
           display: true,
-          text: "Impressions",
+          position: "left",
+          grid: {
+            drawOnChartArea: false,
+          },
         },
-        display: true,
-        position: "left",
-      },
-      y1: {
-        type: "linear",
-        title: {
+        y1: {
+          type: "linear",
+          title: {
+            display: true,
+            text: "Clicks",
+          },
           display: true,
-          text: "Clicks",
+          position: "left",
+          grid: {
+            drawOnChartArea: false,
+          },
         },
-        display: true,
-        position: "left",
-      },
-      y2: {
-        type: "linear",
-        title: {
+        y2: {
+          type: "linear",
+          title: {
+            display: true,
+            text: "Revenue",
+          },
           display: true,
-          text: "Revenue",
+          position: "left",
+          grid: {
+            drawOnChartArea: false,
+          },
         },
-        display: true,
-        position: "left",
-      },
-      y3: {
-        type: "linear",
-        title: {
+        y3: {
+          type: "linear",
+          title: {
+            display: true,
+            text: "Events",
+          },
           display: true,
-          text: "Events",
+          position: "left",
+          grid: {
+            drawOnChartArea: false,
+          },
         },
-        display: true,
-        position: "left",
       },
-    },
-  };
+    };
 
-  const handleChange1 = (_, newValue, activeThumb) => {
-    if (!Array.isArray(newValue)) {
-      return;
-    }
+    const handleStartDateChange = (newValue) => {
+      setStartDate(newValue);
+    };
 
-    if (activeThumb === 0) {
-      setValue1([Math.min(newValue[0], value1[1] - minDistance), value1[1]]);
-    } else {
-      setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
-    }
-  };
+    const handleEndDateChange = (newValue) => {
+      setEndDate(newValue);
+    };
 
-  return (
-    <main style={{ padding: "1rem 0" }}>
-      <div>
-        <Line data={data} options={chartOptions} />
-        <div className="w-50 mx-auto">
-          <Slider
-            getAriaLabel={() => "Minimum distance"}
-            value={value1}
-            max={endIndex}
-            onChange={handleChange1}
-            valueLabelDisplay="auto"
-            disableSwap
-          />
+    return (
+      <main style={{ padding: "1rem 0" }}>
+        <div>
+          <Line data={data} options={chartOptions} />
+          <div className="w-50 mx-auto pt-3">
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <Stack
+                direction={{
+                  xs: "column",
+                  sm: "column",
+                  md: "row",
+                  lg: "row",
+                  xl: "row",
+                }}
+                spacing={2}
+                justifyContent="center"
+                alignItems="center"
+              >
+                <DateTimePicker
+                  label="Start"
+                  value={startDate}
+                  onChange={handleStartDateChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+                <DateTimePicker
+                  label="End"
+                  value={endDate}
+                  onChange={handleEndDateChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </Stack>
+            </LocalizationProvider>
+          </div>
         </div>
-      </div>
-    </main>
-  );
-
-}
+      </main>
+    );
+  }
 
   return (
     <div className="mx-auto m-5">
