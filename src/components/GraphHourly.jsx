@@ -11,8 +11,8 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 
 function GraphHourly() {
-  const [stats, setStats] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [stats, setStats] = useState();
+  const [events, setEvents] = useState();
   const [startDate, setStartDate] = useState(new Date("2016-01-01T23:35:01"));
   const [endDate, setEndDate] = useState(new Date("2017-08-18T21:11:54"));
 
@@ -216,8 +216,7 @@ function GraphHourly() {
     };
 
     return (
-      <main style={{ padding: "1rem 0" }}>
-        <div>
+      <div className="p-1">
           <Line data={data} options={chartOptions} />
           <div className="w-50 mx-auto pt-3">
             <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -248,8 +247,7 @@ function GraphHourly() {
               </Stack>
             </LocalizationProvider>
           </div>
-        </div>
-      </main>
+      </div>
     );
   }
 
