@@ -6,19 +6,20 @@ import Spinner from "react-bootstrap/Spinner";
 import "chartjs-adapter-moment";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
+import moment from "moment";
 
 function GraphHourly() {
   const [stats, setStats] = useState();
   const [events, setEvents] = useState();
-  const [startDate, setStartDate] = useState(new Date("2016-01-01T23:35:01"));
-  const [endDate, setEndDate] = useState(new Date("2017-08-18T21:11:54"));
+  const [startDate, setStartDate] = useState(new Date("2016-07-01"));
+  const [endDate, setEndDate] = useState(new Date("2017-01-18"));
 
   const fetchStats = async () => {
     const response = await axios
-      .get("https://gelatinous-crystalline-guppy.glitch.me/stats/hourly")
+      .get(`https://gelatinous-crystalline-guppy.glitch.me/stats/hourly/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`)
       .catch((err) => console.log(err));
 
     if (response) {
@@ -31,7 +32,7 @@ function GraphHourly() {
 
   const fetchEvents = async () => {
     const response = await axios
-      .get("https://gelatinous-crystalline-guppy.glitch.me/events/hourly")
+      .get(`https://gelatinous-crystalline-guppy.glitch.me/events/hourly/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`)
       .catch((err) => console.log(err));
 
     if (response) {
@@ -45,7 +46,7 @@ function GraphHourly() {
   useEffect(() => {
     fetchStats();
     fetchEvents();
-  }, []);
+  }, [startDate, endDate]);
 
   const filterDate = (x) =>
     dateWithHours(x.hour, new Date(x.date)) >= startDate &&
@@ -232,13 +233,13 @@ function GraphHourly() {
                 justifyContent="center"
                 alignItems="center"
               >
-                <DateTimePicker
+                <DesktopDatePicker
                   label="Start"
                   value={startDate}
                   onChange={handleStartDateChange}
                   renderInput={(params) => <TextField {...params} />}
                 />
-                <DateTimePicker
+                <DesktopDatePicker
                   label="End"
                   value={endDate}
                   onChange={handleEndDateChange}

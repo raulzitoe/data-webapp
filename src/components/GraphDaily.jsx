@@ -3,14 +3,22 @@ import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import moment from "moment";
 
 function GraphDaily() {
   const [stats, setStats] = useState();
   const [events, setEvents] = useState();
+  const [startDate, setStartDate] = useState(new Date("2017-01-01"));
+  const [endDate, setEndDate] = useState(new Date("2017-01-15"));
 
   const fetchStats = async () => {
     const response = await axios
-      .get("https://gelatinous-crystalline-guppy.glitch.me/stats/daily")
+      .get(`https://gelatinous-crystalline-guppy.glitch.me/stats/daily/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`)
       .catch((err) => console.log(err));
 
     if (response) {
@@ -23,7 +31,7 @@ function GraphDaily() {
 
   const fetchEvents = async () => {
     const response = await axios
-      .get("https://gelatinous-crystalline-guppy.glitch.me/events/daily")
+      .get(`https://gelatinous-crystalline-guppy.glitch.me/events/daily/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`)
       .catch((err) => console.log(err));
 
     if (response) {
@@ -37,7 +45,7 @@ function GraphDaily() {
   useEffect(() => {
     fetchStats();
     fetchEvents();
-  }, []);
+  }, [startDate, endDate]);
 
   if (stats && events) {
     var data = {
@@ -158,10 +166,47 @@ function GraphDaily() {
       },
     };
 
+    const handleStartDateChange = (newValue) => {
+      setStartDate(newValue);
+    };
+
+    const handleEndDateChange = (newValue) => {
+      setEndDate(newValue);
+    };
+
     return (
       <main style={{ padding: "1rem 0" }}>
         <div>
           <Line data={data} options={chartOptions} />
+          <div className="w-50 mx-auto pt-3">
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <Stack
+                direction={{
+                  xs: "column",
+                  sm: "column",
+                  md: "row",
+                  lg: "row",
+                  xl: "row",
+                }}
+                spacing={2}
+                justifyContent="center"
+                alignItems="center"
+              >
+                <DesktopDatePicker
+                  label="Start"
+                  value={startDate}
+                  onChange={handleStartDateChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+                <DesktopDatePicker
+                  label="End"
+                  value={endDate}
+                  onChange={handleEndDateChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </Stack>
+            </LocalizationProvider>
+          </div>
         </div>
       </main>
     );
