@@ -34,9 +34,9 @@ export default function GraphScreen() {
       {userChoice === "hourly" && (
         <div className="p-0 pb-5 ps-lg-5 pe-lg-5">
           <Card className="shadow-lg m-0 ms-lg-5 me-lg-5 p-0 p-lg-4">
-            <Card.Title className="text-center">Events - Hourly</Card.Title>
+            <Card.Title className="text-center">Graph - Hourly</Card.Title>
             <GraphHourly />
-            <Card.Body className="text-center"> Hourly events</Card.Body>
+            <Card.Body className="text-center"> Hourly statistics</Card.Body>
           </Card>
         </div>
       )}
