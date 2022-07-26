@@ -120,7 +120,8 @@ function Poi({ data, radioChoice, eventsData, statsData }) {
             break;
           case "Events":
             choiceValue = cluster.properties.events;
-            default: choiceValue = cluster.properties.clicks;
+            break;
+          default: choiceValue = cluster.properties.clicks;
         }
 
         return (
