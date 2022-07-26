@@ -16,7 +16,7 @@ function HomeScreen() {
               height="50"
               className="d-inline-block col-auto"
             />
-            <h1 class="col-auto">Eq Works Web App</h1>
+            <h1 className="col-auto">Eq Works Web App</h1>
           </Card.Title>
             <Card.Title>Created by Raul Vieira</Card.Title>
           </Card.Body>
