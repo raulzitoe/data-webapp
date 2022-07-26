@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS } from "chart.js/auto";
+import Chart from "chart.js/auto";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
@@ -16,36 +16,39 @@ function GraphDaily() {
   const [startDate, setStartDate] = useState(new Date("2017-01-01"));
   const [endDate, setEndDate] = useState(new Date("2017-01-15"));
 
-  const fetchStats = async () => {
-    const response = await axios
-      .get(`https://gelatinous-crystalline-guppy.glitch.me/stats/daily/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`)
-      .catch((err) => console.log(err));
-
-    if (response) {
-      const responseData = response.data;
-
-      console.log("Stats: ", responseData);
-      setStats(responseData);
-    }
-  };
-
-  const fetchEvents = async () => {
-    const response = await axios
-      .get(`https://gelatinous-crystalline-guppy.glitch.me/events/daily/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`)
-      .catch((err) => console.log(err));
-
-    if (response) {
-      const responseData = response.data;
-
-      console.log("Events: ", responseData);
-      setEvents(responseData);
-    }
-  };
-
   useEffect(() => {
+    const fetchStats = async () => {
+      const response = await axios
+        .get(`https://gelatinous-crystalline-guppy.glitch.me/stats/daily/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`)
+        .catch((err) => console.log(err));
+      if (response) {
+        const responseData = response.data;
+        // console.log("Stats: ", responseData);
+        setStats(responseData);
+      }
+    };
+    const fetchEvents = async () => {
+      const response = await axios
+        .get(`https://gelatinous-crystalline-guppy.glitch.me/events/daily/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`)
+        .catch((err) => console.log(err));
+  
+      if (response) {
+        const responseData = response.data;
+        // console.log("Events: ", responseData);
+        setEvents(responseData);
+      }
+    };
     fetchStats();
     fetchEvents();
   }, [startDate, endDate]);
+
+  const handleStartDateChange = (newValue) => {
+    setStartDate(newValue);
+  };
+
+  const handleEndDateChange = (newValue) => {
+    setEndDate(newValue);
+  };
 
   if (stats && events) {
     var data = {
@@ -164,14 +167,6 @@ function GraphDaily() {
           position: "left",
         },
       },
-    };
-
-    const handleStartDateChange = (newValue) => {
-      setStartDate(newValue);
-    };
-
-    const handleEndDateChange = (newValue) => {
-      setEndDate(newValue);
     };
 
     return (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS } from "chart.js/auto";
+import Chart from "chart.js/auto";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import "chartjs-adapter-moment";
@@ -17,33 +17,35 @@ function GraphHourly() {
   const [startDate, setStartDate] = useState(new Date("2016-07-01"));
   const [endDate, setEndDate] = useState(new Date("2017-01-18"));
 
-  const fetchStats = async () => {
-    const response = await axios
-      .get(`https://gelatinous-crystalline-guppy.glitch.me/stats/hourly/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`)
-      .catch((err) => console.log(err));
-
-    if (response) {
-      const responseData = response.data;
-
-      console.log("Stats: ", responseData);
-      setStats(responseData);
-    }
-  };
-
-  const fetchEvents = async () => {
-    const response = await axios
-      .get(`https://gelatinous-crystalline-guppy.glitch.me/events/hourly/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`)
-      .catch((err) => console.log(err));
-
-    if (response) {
-      const responseData = response.data;
-
-      console.log("Events: ", responseData);
-      setEvents(responseData);
-    }
-  };
-
   useEffect(() => {
+    const fetchStats = async () => {
+      const response = await axios
+        .get(
+          `https://gelatinous-crystalline-guppy.glitch.me/stats/hourly/${moment(
+            startDate
+          ).format("YYYY-MM-DD")}/${moment(endDate).format("YYYY-MM-DD")}`
+        )
+        .catch((err) => console.log(err));
+      if (response) {
+        const responseData = response.data;
+        // console.log("Stats: ", responseData);
+        setStats(responseData);
+      }
+    };
+    const fetchEvents = async () => {
+      const response = await axios
+        .get(
+          `https://gelatinous-crystalline-guppy.glitch.me/events/hourly/${moment(
+            startDate
+          ).format("YYYY-MM-DD")}/${moment(endDate).format("YYYY-MM-DD")}`
+        )
+        .catch((err) => console.log(err));
+      if (response) {
+        const responseData = response.data;
+        // console.log("Events: ", responseData);
+        setEvents(responseData);
+      }
+    };
     fetchStats();
     fetchEvents();
   }, [startDate, endDate]);
@@ -56,6 +58,14 @@ function GraphHourly() {
     date.setTime(date.getTime() + numOfHours * 60 * 60 * 1000);
     return date;
   }
+
+  const handleStartDateChange = (newValue) => {
+    setStartDate(newValue);
+  };
+
+  const handleEndDateChange = (newValue) => {
+    setEndDate(newValue);
+  };
 
   if (stats && events) {
     var data = {
@@ -121,8 +131,6 @@ function GraphHourly() {
         },
       ],
     };
-
-    console.log(data);
 
     const chartOptions = {
       type: "line",
@@ -208,46 +216,38 @@ function GraphHourly() {
       },
     };
 
-    const handleStartDateChange = (newValue) => {
-      setStartDate(newValue);
-    };
-
-    const handleEndDateChange = (newValue) => {
-      setEndDate(newValue);
-    };
-
     return (
       <div className="p-1">
-          <Line data={data} options={chartOptions} />
-          <div className="w-50 mx-auto pt-3">
-            <LocalizationProvider dateAdapter={AdapterMoment}>
-              <Stack
-                direction={{
-                  xs: "column",
-                  sm: "column",
-                  md: "row",
-                  lg: "row",
-                  xl: "row",
-                }}
-                spacing={2}
-                justifyContent="center"
-                alignItems="center"
-              >
-                <DesktopDatePicker
-                  label="Start"
-                  value={startDate}
-                  onChange={handleStartDateChange}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-                <DesktopDatePicker
-                  label="End"
-                  value={endDate}
-                  onChange={handleEndDateChange}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </Stack>
-            </LocalizationProvider>
-          </div>
+        <Line data={data} options={chartOptions} />
+        <div className="w-50 mx-auto pt-3">
+          <LocalizationProvider dateAdapter={AdapterMoment}>
+            <Stack
+              direction={{
+                xs: "column",
+                sm: "column",
+                md: "row",
+                lg: "row",
+                xl: "row",
+              }}
+              spacing={2}
+              justifyContent="center"
+              alignItems="center"
+            >
+              <DesktopDatePicker
+                label="Start"
+                value={startDate}
+                onChange={handleStartDateChange}
+                renderInput={(params) => <TextField {...params} />}
+              />
+              <DesktopDatePicker
+                label="End"
+                value={endDate}
+                onChange={handleEndDateChange}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </Stack>
+          </LocalizationProvider>
+        </div>
       </div>
     );
   }
