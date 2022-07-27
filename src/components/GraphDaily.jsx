@@ -15,21 +15,25 @@ function GraphDaily() {
   const [events, setEvents] = useState();
   const [startDate, setStartDate] = useState(new Date("2017-01-01"));
   const [endDate, setEndDate] = useState(new Date("2017-01-15"));
+  const baseUrl = "https://gelatinous-crystalline-guppy.glitch.me";
+  const token = `${process.env.REACT_APP_API_KEY}/`;
+  const dateUrl = `${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`;
 
   useEffect(() => {
     const fetchStats = async () => {
       const response = await axios
-        .get(`https://gelatinous-crystalline-guppy.glitch.me/stats/daily/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`)
+        .get(baseUrl + "/stats/daily/" + token + dateUrl)
         .catch((err) => console.log(err));
       if (response) {
         const responseData = response.data;
         // console.log("Stats: ", responseData);
+        
         setStats(responseData);
       }
     };
     const fetchEvents = async () => {
       const response = await axios
-        .get(`https://gelatinous-crystalline-guppy.glitch.me/events/daily/${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`)
+        .get(baseUrl + "/events/daily/" + token + dateUrl)
         .catch((err) => console.log(err));
   
       if (response) {

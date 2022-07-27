@@ -8,54 +8,47 @@ function Map({radioChoice}) {
   const [data, setData] = useState();
   const [statsData, setStatsData] = useState();
   const [eventsData, setEventsData] = useState();
-
-  console.log(radioChoice);
-
-  const fetchData = async () => {
-    const response = await axios
-      .get("https://gelatinous-crystalline-guppy.glitch.me/poi")
-      .catch((err) => console.log(err));
-      
-    if (response) { 
-      setData(response.data);
-    }
-  };
-
-  const fetchStats = async () => {
-    const response = await axios
-      .get("https://gelatinous-crystalline-guppy.glitch.me/stats/sum")
-      .catch((err) => console.log(err));
-
-    if (response) {
-      const responseData = response.data;
-
-      console.log("Stats: ", responseData);
-      setStatsData(responseData);
-    }
-  };
-
-  const fetchEvents = async () => {
-    const response = await axios
-      .get("https://gelatinous-crystalline-guppy.glitch.me/events/sum")
-      .catch((err) => console.log(err));
-
-    if (response) {
-      const responseData = response.data;
-
-      console.log("Events: ", responseData);
-      setEventsData(responseData);
-    }
-  };
+  const baseUrl = "https://gelatinous-crystalline-guppy.glitch.me/";
+  const token = `${process.env.REACT_APP_API_KEY}/`;
 
   useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios
+        .get(baseUrl + token + "poi")
+        .catch((err) => console.log(err));
+        
+      if (response) { 
+        setData(response.data);
+      }
+    };
+  
+    const fetchStats = async () => {
+      const response = await axios
+        .get(baseUrl + "stats/sum")
+        .catch((err) => console.log(err));
+  
+      if (response) {
+        const responseData = response.data;
+  
+        console.log("Stats: ", responseData);
+        setStatsData(responseData);
+      }
+    };
+  
+    const fetchEvents = async () => {
+      const response = await axios
+        .get( baseUrl + "events/sum")
+        .catch((err) => console.log(err));
+  
+      if (response) {
+        const responseData = response.data;
+  
+        console.log("Events: ", responseData);
+        setEventsData(responseData);
+      }
+    };
     fetchData();
-  }, []);
-
-  useEffect(() => {
     fetchStats();
-  }, []);
-
-  useEffect(() => {
     fetchEvents();
   }, []);
 

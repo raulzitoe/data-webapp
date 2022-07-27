@@ -16,11 +16,15 @@ export default function TableScreen() {
   const [startDate, setStartDate] = useState(new Date("2017-01-01"));
   const [endDate, setEndDate] = useState(new Date("2017-01-15"));
   const [poi, setPoi] = useState([]);
-
+  const baseUrl = "https://gelatinous-crystalline-guppy.glitch.me/";
+  const token = `${process.env.REACT_APP_API_KEY}/`;
+  const dateUrl = `${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`;
+  
+  
   useEffect(() => {
     const fetchPoi = async () => {
       const response = await axios
-        .get("https://gelatinous-crystalline-guppy.glitch.me/poi")
+        .get(baseUrl + token + "poi")
         .catch((err) => console.log(err));
   
       if (response) {
@@ -36,11 +40,7 @@ export default function TableScreen() {
   useEffect(() => {
     const fetchEvents = async () => {
       const response = await axios
-        .get(
-          `https://gelatinous-crystalline-guppy.glitch.me/events/hourly/${moment(
-            startDate
-          ).format("YYYY-MM-DD")}/${moment(endDate).format("YYYY-MM-DD")}`
-        )
+        .get(baseUrl + "events/hourly/" + token + dateUrl)
         .catch((err) => console.log(err));
   
       if (response) {

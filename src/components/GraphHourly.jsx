@@ -16,15 +16,14 @@ function GraphHourly() {
   const [events, setEvents] = useState();
   const [startDate, setStartDate] = useState(new Date("2016-07-01"));
   const [endDate, setEndDate] = useState(new Date("2017-01-18"));
+  const baseUrl = "https://gelatinous-crystalline-guppy.glitch.me/";
+  const token = `${process.env.REACT_APP_API_KEY}/`;
+  const dateUrl = `${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`;
 
   useEffect(() => {
     const fetchStats = async () => {
       const response = await axios
-        .get(
-          `https://gelatinous-crystalline-guppy.glitch.me/stats/hourly/${moment(
-            startDate
-          ).format("YYYY-MM-DD")}/${moment(endDate).format("YYYY-MM-DD")}`
-        )
+        .get(baseUrl + "stats/hourly/" + token + dateUrl)
         .catch((err) => console.log(err));
       if (response) {
         const responseData = response.data;
@@ -34,11 +33,7 @@ function GraphHourly() {
     };
     const fetchEvents = async () => {
       const response = await axios
-        .get(
-          `https://gelatinous-crystalline-guppy.glitch.me/events/hourly/${moment(
-            startDate
-          ).format("YYYY-MM-DD")}/${moment(endDate).format("YYYY-MM-DD")}`
-        )
+        .get(baseUrl + "events/hourly/" + token + dateUrl)
         .catch((err) => console.log(err));
       if (response) {
         const responseData = response.data;
