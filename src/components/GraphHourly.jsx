@@ -213,8 +213,7 @@ function GraphHourly() {
 
     return (
       <div className="p-1">
-        <Line data={data} options={chartOptions} />
-        <div className="w-50 mx-auto pt-3">
+        <div className="w-50 mx-auto pb-3">
           <LocalizationProvider dateAdapter={AdapterMoment}>
             <Stack
               direction={{
@@ -243,6 +242,7 @@ function GraphHourly() {
             </Stack>
           </LocalizationProvider>
         </div>
+        <Line data={data} options={chartOptions} />
       </div>
     );
   }
