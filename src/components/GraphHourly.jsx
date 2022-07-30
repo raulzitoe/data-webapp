@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import axios from "axios";
@@ -10,40 +10,19 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import moment from "moment";
+import { useQuery } from '@tanstack/react-query'
 
 function GraphHourly() {
-  const [stats, setStats] = useState();
-  const [events, setEvents] = useState();
   const [startDate, setStartDate] = useState(new Date("2016-07-01"));
   const [endDate, setEndDate] = useState(new Date("2017-01-18"));
   const baseUrl = "https://gelatinous-crystalline-guppy.glitch.me/";
   const token = `${process.env.REACT_APP_API_KEY}/`;
   const dateUrl = `${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`;
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      const response = await axios
-        .get(baseUrl + "stats/hourly/" + token + dateUrl)
-        .catch((err) => console.log(err));
-      if (response) {
-        const responseData = response.data;
-        // console.log("Stats: ", responseData);
-        setStats(responseData);
-      }
-    };
-    const fetchEvents = async () => {
-      const response = await axios
-        .get(baseUrl + "events/hourly/" + token + dateUrl)
-        .catch((err) => console.log(err));
-      if (response) {
-        const responseData = response.data;
-        // console.log("Events: ", responseData);
-        setEvents(responseData);
-      }
-    };
-    fetchStats();
-    fetchEvents();
-  }, [startDate, endDate]);
+  const {data: stats, status: status1, error } = useQuery(['statsHourly', startDate, endDate], () => axios
+  .get(baseUrl + "/stats/hourly/" + token + dateUrl).then((res) => (res.data)));
+  const {data: events, status: status2 } = useQuery(['eventsHourly', startDate, endDate], () => axios
+  .get(baseUrl + "/events/hourly/" + token + dateUrl).then((res) => (res.data)));
 
   const filterDate = (x) =>
     dateWithHours(x.hour, new Date(x.date)) >= startDate &&
