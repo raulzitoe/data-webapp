@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import axios from "axios";
@@ -13,16 +13,28 @@ import moment from "moment";
 import { useQuery } from '@tanstack/react-query'
 
 function GraphHourly() {
+  const [stats, setStats] = useState();
+  const [events, setEvents] = useState();
   const [startDate, setStartDate] = useState(new Date("2016-07-01"));
   const [endDate, setEndDate] = useState(new Date("2017-01-18"));
   const baseUrl = "https://gelatinous-crystalline-guppy.glitch.me/";
   const token = `${process.env.REACT_APP_API_KEY}/`;
   const dateUrl = `${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`;
 
-  const {data: stats, status: status1, error } = useQuery(['statsHourly', startDate, endDate], () => axios
+  const {data: statsData, status: status1, error } = useQuery(['statsHourly', startDate, endDate], () => axios
   .get(baseUrl + "/stats/hourly/" + token + dateUrl).then((res) => (res.data)));
-  const {data: events, status: status2 } = useQuery(['eventsHourly', startDate, endDate], () => axios
+  const {data: eventsData, status: status2 } = useQuery(['eventsHourly', startDate, endDate], () => axios
   .get(baseUrl + "/events/hourly/" + token + dateUrl).then((res) => (res.data)));
+
+  useEffect(() => {
+    console.log(statsData);
+    if (typeof statsData !== "undefined") {
+      setStats(statsData);
+    }
+    if (typeof eventsData !== "undefined") {
+      setEvents(eventsData);
+    }
+  }, [statsData, eventsData]);
 
   const filterDate = (x) =>
     dateWithHours(x.hour, new Date(x.date)) >= startDate &&
@@ -218,6 +230,12 @@ function GraphHourly() {
                 onChange={handleEndDateChange}
                 renderInput={(params) => <TextField {...params} />}
               />
+              {(typeof statsData === "undefined" ||
+                  typeof eventsData === "undefined") && (
+                  <div className="mx-auto ps-3">
+                    <Spinner animation="border" variant="primary" />
+                  </div>
+                )}
             </Stack>
           </LocalizationProvider>
         </div>

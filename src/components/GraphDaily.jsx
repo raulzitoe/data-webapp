@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import axios from "axios";
@@ -9,22 +9,48 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import moment from "moment";
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from "@tanstack/react-query";
 
 function GraphDaily() {
+  const [stats, setStats] = useState();
+  const [events, setEvents] = useState();
   const [startDate, setStartDate] = useState(new Date("2017-01-01"));
   const [endDate, setEndDate] = useState(new Date("2017-01-15"));
   const baseUrl = "https://gelatinous-crystalline-guppy.glitch.me";
   const token = `${process.env.REACT_APP_API_KEY}/`;
-  const dateUrl = `${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`;
+  const dateUrl = `${moment(startDate).format("YYYY-MM-DD")}/${moment(
+    endDate
+  ).format("YYYY-MM-DD")}`;
 
-  const {data: stats, status: status1, error } = useQuery(['statsDaily', startDate, endDate], () => axios
-  .get(baseUrl + "/stats/daily/" + token + dateUrl).then((res) => (res.data)));
-  const {data: events, status: status2 } = useQuery(['eventsDaily', startDate, endDate], () => axios
-  .get(baseUrl + "/events/daily/" + token + dateUrl).then((res) => (res.data)));
+  const {
+    data: statsData,
+    status: status1,
+    error,
+  } = useQuery(["statsDaily", startDate, endDate], () =>
+    axios
+      .get(baseUrl + "/stats/daily/" + token + dateUrl)
+      .then((res) => res.data)
+  );
+  const { data: eventsData, status: status2 } = useQuery(
+    ["eventsDaily", startDate, endDate],
+    () =>
+      axios
+        .get(baseUrl + "/events/daily/" + token + dateUrl)
+        .then((res) => res.data)
+  );
   // console.log("Status1: ", status1);
   // console.log("Status2: ", status2);
   // console.log(error);
+
+  useEffect(() => {
+    console.log(statsData);
+    if (typeof statsData !== "undefined") {
+      setStats(statsData);
+    }
+    if (typeof eventsData !== "undefined") {
+      setEvents(eventsData);
+    }
+  }, [statsData, eventsData]);
 
   const handleStartDateChange = (newValue) => {
     setStartDate(newValue);
@@ -182,6 +208,12 @@ function GraphDaily() {
                   onChange={handleEndDateChange}
                   renderInput={(params) => <TextField {...params} />}
                 />
+                {(typeof statsData === "undefined" ||
+                  typeof eventsData === "undefined") && (
+                  <div className="mx-auto ps-3">
+                    <Spinner animation="border" variant="primary" />
+                  </div>
+                )}
               </Stack>
             </LocalizationProvider>
           </div>
@@ -195,7 +227,6 @@ function GraphDaily() {
       <Spinner animation="border" variant="primary" />
     </div>
   );
- 
 }
 
 export default GraphDaily;
