@@ -176,6 +176,15 @@ function GraphDaily() {
           display: true,
           position: "left",
         },
+        y3: {
+          type: "linear",
+          title: {
+            display: true,
+            text: "Events",
+          },
+          display: true,
+          position: "left",
+        },
       },
     };
 
