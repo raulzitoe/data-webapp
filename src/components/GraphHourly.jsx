@@ -92,7 +92,7 @@ function GraphHourly() {
             .filter((value) => filterDate(value))
             .map((x) => ({
               x: dateWithHours(x.hour, new Date(x.date)),
-              y: x.revenue,
+              y: Number(x.revenue.replace(/[^0-9.-]+/g,"")).toFixed(2),
             })),
           backgroundColor: ["green"],
           borderColor: "green",
