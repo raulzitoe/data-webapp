@@ -10,49 +10,31 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import moment from "moment";
 import Spinner from "react-bootstrap/Spinner";
+import { useQuery } from '@tanstack/react-query'
 
 export default function TableScreen() {
   const [events, setEvents] = useState([]);
   const [startDate, setStartDate] = useState(new Date("2017-01-01"));
   const [endDate, setEndDate] = useState(new Date("2017-01-15"));
-  const [poi, setPoi] = useState([]);
   const baseUrl = "https://gelatinous-crystalline-guppy.glitch.me/";
   const token = `${process.env.REACT_APP_API_KEY}/`;
   const dateUrl = `${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`;
   
-  
-  useEffect(() => {
-    const fetchPoi = async () => {
-      const response = await axios
-        .get(baseUrl + token + "poi")
-        .catch((err) => console.log(err));
-  
-      if (response) {
-        const poi = response.data;
-  
-        console.log("Poi: ", poi);
-        setPoi(poi);
-      }
-    };
-    fetchPoi();
-  }, []);
+  const {data: eventsapi, status: status1, error1 } = useQuery(['eventsHourlyTable', startDate, endDate], () => axios
+  .get(baseUrl + "/events/hourly/" + token + dateUrl).then((res) => (res.data)));
+  const {data: poi, status: status2, error2 } = useQuery(['poi'], () => axios
+  .get(baseUrl + token + "poi").then((res) => (res.data)));
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      const response = await axios
-        .get(baseUrl + "events/hourly/" + token + dateUrl)
-        .catch((err) => console.log(err));
-  
-      if (response) {
-        const events2 = response.data;
-        events2.map((x)=>(x.poi_id = poi.find((y) => y.poi_id === x.poi_id)?.name    ));
-        setEvents(events2);
-  
-        console.log("Events: ", events2);
-      }
-    };
-    fetchEvents();
-  }, [startDate, endDate, poi]);
+    if((typeof eventsapi !== "undefined") && (typeof poi !== "undefined")){
+      console.log("risos1 ", eventsapi);
+      console.log("risos2 ", poi);
+      const auxEvents = [...eventsapi];
+      console.log("aux events: ", auxEvents);
+      auxEvents.map((event)=>(event.poi = poi.find((point) => point.poi_id === event.poi)?.name));
+      setEvents(auxEvents);
+    }
+  }, [eventsapi, poi]);
 
   const eventsData = useMemo(() => [...events], [events]);
 
@@ -126,6 +108,12 @@ export default function TableScreen() {
                   onChange={handleEndDateChange}
                   renderInput={(params) => <TextField {...params} />}
                 />
+                {(typeof eventsapi === "undefined" ||
+                  typeof poi === "undefined") && (
+                  <div className="mx-auto ps-3">
+                    <Spinner animation="border" variant="primary" />
+                  </div>
+                )}
               </Stack>
             </LocalizationProvider>
           </div>
