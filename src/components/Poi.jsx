@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import L from "leaflet";
 import useSupercluster from "use-supercluster";
-import { Marker, useMap, Popup, Circle, Tooltip } from "react-leaflet";
+import { Marker, useMap, Popup, Circle } from "react-leaflet";
 import "./Poi.css";
 import iconMarker from "../icon-test.png";
 
@@ -60,16 +60,23 @@ function Poi({ data, radioChoice, eventsData, statsData }) {
       cluster: false,
       name: poi.name,
       choice: radioChoice,
-      clicks: statsData.find((x) => x.poi_id === poi.poi_id).clicks,
-      impressions: statsData.find((x) => x.poi_id === poi.poi_id).impressions,
-      revenue: statsData.find((x) => x.poi_id === poi.poi_id).revenue,
-      events: eventsData.find((x) => x.poi_id === poi.poi_id).events,
+      clicks: statsData.find((x) => x.poi_id === poi.poi_id)?.clicks,
+      impressions: statsData.find((x) => x.poi_id === poi.poi_id)?.impressions,
+      revenue: statsData.find((x) => x.poi_id === poi.poi_id)?.revenue,
+      events: eventsData.find((x) => x.poi_id === poi.poi_id)?.events,
     },
     geometry: {
       type: "Point",
       coordinates: [parseFloat(poi.lon), parseFloat(poi.lat)],
     },
   }));
+
+  const maxValues = {
+    Clicks: Math.max(...statsData.map(o => o.clicks)),
+    Impressions: Math.max(...statsData.map(o => o.impressions)),
+    Revenue: Math.max(...statsData.map(o => o.revenue)),
+    Events: Math.max(...eventsData.map(o => o.events))
+  }
 
   const { clusters, supercluster } = useSupercluster({
     points: points,
@@ -121,21 +128,27 @@ function Poi({ data, radioChoice, eventsData, statsData }) {
           case "Events":
             choiceValue = cluster.properties.events;
             break;
-          default: choiceValue = cluster.properties.clicks;
+          default:
+            choiceValue = cluster.properties.clicks;
         }
 
         return (
-          <div>
-            <Marker position={[latitude, longitude]} icon={pointIcon} key={`poi-${cluster.properties.name}`}>
-              <Popup>{cluster.properties.name}</Popup>
-              {/* <Tooltip>{cluster.properties.name}</Tooltip> */}
-              <Tooltip>{cluster.properties.name} <br/>{radioChoice} : {choiceValue}</Tooltip>
+          <div key={`div-${cluster.properties.name}`}>
+            <Marker
+              position={[latitude, longitude]}
+              icon={pointIcon}
+              key={`poi-${cluster.properties.name}`}
+            >
+              <Popup>
+                {cluster.properties.name} <br />
+                {radioChoice} : {choiceValue}
+              </Popup>
             </Marker>
 
             <Circle
               center={[latitude, longitude]}
               pathOptions={{ fillColor: "red" }}
-              radius={choiceValue/100}
+              radius={(choiceValue/maxValues[radioChoice]) * 1500}
             />
           </div>
         );
