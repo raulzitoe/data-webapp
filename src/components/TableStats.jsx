@@ -136,43 +136,49 @@ function TableStats() {
           setGlobalFilter={setGlobalFilter}
           globalFilter={state.globalFilter}
         />
-        <Table
-          {...getTableProps()}
-          reponsive="true"
-          striped
-          hover
-          size="sm bg-white"
-        >
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="ps-3"
-                  >
-                    {capitalizeFirstLetter(column.render("Header"))}
-                    {column.isSorted ? (column.isSortedDesc ? " ▼" : " ▲") : ""}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
+        <div style={{ overflow: "scroll" }}>
+          <Table
+            {...getTableProps()}
+            reponsive="true"
+            striped
+            hover
+            size="sm bg-white"
+          >
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      className="ps-3"
+                    >
+                      {capitalizeFirstLetter(column.render("Header"))}
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " ▼"
+                          : " ▲"
+                        : ""}
+                    </th>
+                  ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </Table>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </div>
       </Card>
     );
   }
