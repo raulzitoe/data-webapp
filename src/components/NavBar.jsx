@@ -4,7 +4,7 @@ import logo from "../../src/logo.svg";
 
 function NavBar() {
   return (
-    <Navbar bg="light" sticky="top" style={{minHeight: '5vh'}} expand="sm">
+    <Navbar bg="light" sticky="top" style={{minHeight: '5vh'}}  collapseOnSelect expand="sm">
       <Container className="mx-auto">
         <Navbar.Brand>
         <img
@@ -18,16 +18,16 @@ function NavBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <LinkContainer to="/eq-works-webapp/">
+            <LinkContainer to="/eq-works-webapp/" eventKey="1">
               <Nav.Link>Home</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/eq-works-webapp/graph">
+            <LinkContainer to="/eq-works-webapp/graph" eventKey="2">
               <Nav.Link>Graph</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/eq-works-webapp/table">
+            <LinkContainer to="/eq-works-webapp/table" eventKey="3">
               <Nav.Link>Table</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/eq-works-webapp/map">
+            <LinkContainer to="/eq-works-webapp/map" eventKey="4">
               <Nav.Link>Map</Nav.Link>
             </LinkContainer>
           </Nav>
