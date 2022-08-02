@@ -12,7 +12,7 @@ function MapScreen() {
 
 
   return (
-    <div className="bg-primary pt-1 pb-1 p-lg-5" style={{height: '95vh'}}>
+    <div className="bg-primary pt-1 pb-1 p-lg-5">
       <Card className="shadow-lg mx-auto" style={{height: '100%'}}>
       <FormControl className="mx-auto">
       <FormLabel className="mx-auto mt-2"><h4>Metric</h4></FormLabel>
