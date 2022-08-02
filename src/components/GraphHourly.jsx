@@ -10,7 +10,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import moment from "moment";
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from "@tanstack/react-query";
 
 function GraphHourly() {
   const [stats, setStats] = useState();
@@ -19,15 +19,26 @@ function GraphHourly() {
   const [endDate, setEndDate] = useState(new Date("2017-01-18"));
   const baseUrl = "https://gelatinous-crystalline-guppy.glitch.me/";
   const token = `${process.env.REACT_APP_API_KEY}/`;
-  const dateUrl = `${moment(startDate).format('YYYY-MM-DD')}/${moment(endDate).format('YYYY-MM-DD')}`;
+  const dateUrl = `${moment(startDate).format("YYYY-MM-DD")}/${moment(
+    endDate
+  ).format("YYYY-MM-DD")}`;
 
-  const {data: statsData, status: status1, error } = useQuery(['statsHourly', startDate, endDate], () => axios
-  .get(baseUrl + "/stats/hourly/" + token + dateUrl).then((res) => (res.data)));
-  const {data: eventsData, status: status2 } = useQuery(['eventsHourly', startDate, endDate], () => axios
-  .get(baseUrl + "/events/hourly/" + token + dateUrl).then((res) => (res.data)));
+  const { data: statsData } = useQuery(
+    ["statsHourly", startDate, endDate],
+    () =>
+      axios
+        .get(baseUrl + "/stats/hourly/" + token + dateUrl)
+        .then((res) => res.data)
+  );
+  const { data: eventsData } = useQuery(
+    ["eventsHourly", startDate, endDate],
+    () =>
+      axios
+        .get(baseUrl + "/events/hourly/" + token + dateUrl)
+        .then((res) => res.data)
+  );
 
   useEffect(() => {
-    console.log(statsData);
     if (typeof statsData !== "undefined") {
       setStats(statsData);
     }
@@ -92,7 +103,7 @@ function GraphHourly() {
             .filter((value) => filterDate(value))
             .map((x) => ({
               x: dateWithHours(x.hour, new Date(x.date)),
-              y: Number(x.revenue.replace(/[^0-9.-]+/g,"")).toFixed(2),
+              y: Number(x.revenue.replace(/[^0-9.-]+/g, "")).toFixed(2),
             })),
           backgroundColor: ["green"],
           borderColor: "green",
@@ -231,11 +242,11 @@ function GraphHourly() {
                 renderInput={(params) => <TextField {...params} />}
               />
               {(typeof statsData === "undefined" ||
-                  typeof eventsData === "undefined") && (
-                  <div className="mx-auto ps-3">
-                    <Spinner animation="border" variant="primary" />
-                  </div>
-                )}
+                typeof eventsData === "undefined") && (
+                <div className="mx-auto ps-3">
+                  <Spinner animation="border" variant="primary" />
+                </div>
+              )}
             </Stack>
           </LocalizationProvider>
         </div>

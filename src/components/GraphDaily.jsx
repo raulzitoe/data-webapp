@@ -22,28 +22,20 @@ function GraphDaily() {
     endDate
   ).format("YYYY-MM-DD")}`;
 
-  const {
-    data: statsData,
-    status: status1,
-    error,
-  } = useQuery(["statsDaily", startDate, endDate], () =>
+  const { data: statsData } = useQuery(["statsDaily", startDate, endDate], () =>
     axios
       .get(baseUrl + "/stats/daily/" + token + dateUrl)
       .then((res) => res.data)
   );
-  const { data: eventsData, status: status2 } = useQuery(
+  const { data: eventsData } = useQuery(
     ["eventsDaily", startDate, endDate],
     () =>
       axios
         .get(baseUrl + "/events/daily/" + token + dateUrl)
         .then((res) => res.data)
   );
-  // console.log("Status1: ", status1);
-  // console.log("Status2: ", status2);
-  // console.log(error);
 
   useEffect(() => {
-    console.log(statsData);
     if (typeof statsData !== "undefined") {
       setStats(statsData);
     }

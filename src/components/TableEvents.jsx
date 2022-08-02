@@ -22,29 +22,20 @@ function TableEvents() {
     endDate
   ).format("YYYY-MM-DD")}`;
 
-  const {
-    data: eventsapi,
-    status: status1,
-    error1,
-  } = useQuery(["eventsHourlyTable", startDate, endDate], () =>
-    axios
-      .get(baseUrl + "/events/hourly/" + token + dateUrl)
-      .then((res) => res.data)
+  const { data: eventsapi } = useQuery(
+    ["eventsHourlyTable", startDate, endDate],
+    () =>
+      axios
+        .get(baseUrl + "/events/hourly/" + token + dateUrl)
+        .then((res) => res.data)
   );
-  const {
-    data: poi,
-    status: status2,
-    error2,
-  } = useQuery(["poi"], () =>
+  const { data: poi } = useQuery(["poi"], () =>
     axios.get(baseUrl + token + "poi").then((res) => res.data)
   );
 
   useEffect(() => {
     if (typeof eventsapi !== "undefined" && typeof poi !== "undefined") {
-      console.log("risos1 ", eventsapi);
-      console.log("risos2 ", poi);
       const auxEvents = [...eventsapi];
-      console.log("aux events: ", auxEvents);
       auxEvents.map(
         (event) =>
           (event.poi = poi.find((point) => point.poi_id === event.poi)?.name)

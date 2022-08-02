@@ -22,20 +22,12 @@ function TableStats() {
     endDate
   ).format("YYYY-MM-DD")}`;
 
-  const {
-    data: statsapi,
-    status: status1,
-    error1,
-  } = useQuery(["statsHourly", startDate, endDate], () =>
+  const { data: statsapi } = useQuery(["statsHourly", startDate, endDate], () =>
     axios
       .get(baseUrl + "/stats/hourly/" + token + dateUrl)
       .then((res) => res.data)
   );
-  const {
-    data: poi,
-    status: status2,
-    error2,
-  } = useQuery(["poi"], () =>
+  const { data: poi } = useQuery(["poi"], () =>
     axios.get(baseUrl + token + "poi").then((res) => res.data)
   );
 
@@ -46,7 +38,6 @@ function TableStats() {
         (stat) =>
           (stat.poi = poi.find((point) => point.poi_id === stat.poi)?.name)
       );
-      console.log("auxStats: ", auxStats);
       setStats(auxStats);
     }
   }, [statsapi, poi]);
