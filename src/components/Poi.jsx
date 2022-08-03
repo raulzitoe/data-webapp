@@ -123,7 +123,7 @@ function Poi({ data, radioChoice, eventsData, statsData }) {
             choiceValue = cluster.properties.impressions;
             break;
           case "Revenue":
-            choiceValue = parseFloat(cluster.properties.revenue).toFixed(2);
+            choiceValue = Number(parseFloat(cluster.properties.revenue).toFixed(2)) || 0;
             break;
           case "Events":
             choiceValue = cluster.properties.events;
@@ -141,14 +141,14 @@ function Poi({ data, radioChoice, eventsData, statsData }) {
             >
               <Popup>
                 {cluster.properties.name} <br />
-                {radioChoice} : {choiceValue}
+                {radioChoice} : {choiceValue || 0}
               </Popup>
             </Marker>
 
             <Circle
               center={[latitude, longitude]}
               pathOptions={{ fillColor: "red" }}
-              radius={(choiceValue/maxValues[radioChoice]) * 1500}
+              radius={(choiceValue/maxValues[radioChoice]) * 1500 || 1}
             />
           </div>
         );
