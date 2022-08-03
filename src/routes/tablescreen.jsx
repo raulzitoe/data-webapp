@@ -7,8 +7,8 @@ function TableScreen() {
   const [userChoice, setUserChoice] = useState("events");
 
   return (
-    <>
-      <div className="bg-primary">
+    <div className="bg-primary" style={{minHeight: "95vh"}}>
+      <div >
         <div className="text-center pt-3">
           <Button
             className="bg-dark me-4"
@@ -24,11 +24,11 @@ function TableScreen() {
           </Button>
         </div>
       </div>
-      <div className="bg-primary pt-3 pb-5 ps-lg-5 pe-lg-5">
+      <div className="pt-3 pb-5 ps-lg-5 pe-lg-5">
         {userChoice === "events" && <TableEvents />}
         {userChoice === "stats" && <TableStats />}
       </div>
-    </>
+    </div>
   );
 }
 

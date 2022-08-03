@@ -8,7 +8,7 @@ export default function GraphScreen() {
   const [userChoice, setUserChoice] = useState("daily");
 
   return (
-    <div className="bg-primary">
+    <div className="bg-primary" style={{minHeight: "95vh"}}>
       <div className="text-center pt-3 pb-3">
         <Button className="bg-dark me-4" onClick={() => setUserChoice("daily")}>
           Daily

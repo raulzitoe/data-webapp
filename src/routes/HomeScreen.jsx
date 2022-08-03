@@ -5,7 +5,7 @@ function HomeScreen() {
   return (
     <div className="bg-primary" style={{ height: "94vh" }}>
       <div className="row justify-content-center">
-        <Card className="shadow-lg col-auto mx-auto text-center m-1 mt-5 m-lg-5">
+        <Card className="shadow-lg col-auto text-center mt-5 m-lg-5">
           
           <Card.Body className="">
             <Card.Title className="row justify-content-center">
