@@ -181,8 +181,7 @@ function GraphDaily() {
     };
 
     return (
-      <main style={{ padding: "1rem 0" }}>
-        <div>
+        <>
           <div className="w-50 mx-auto pb-3">
             <LocalizationProvider dateAdapter={AdapterMoment}>
               <Stack
@@ -219,8 +218,7 @@ function GraphDaily() {
             </LocalizationProvider>
           </div>
           <Line data={data} options={chartOptions} />
-        </div>
-      </main>
+        </>
     );
   }
   return (
