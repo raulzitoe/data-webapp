@@ -85,7 +85,7 @@ function TableStats() {
 
   if (stats && poi) {
     return (
-      <Card className="shadow-lg p-0 p-lg-5 mx-auto">
+      <Card className="shadow-lg p-0 ps-lg-5 pe-lg-5 pb-lg-5 pt-lg-1 mx-auto">
         <h2 className="mx-auto mb-2 mt-2 mb-lg-4">Table - Hourly Statistics</h2>
         <div className="w-50 mx-auto mb-4">
           <LocalizationProvider dateAdapter={AdapterMoment}>
