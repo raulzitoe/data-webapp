@@ -13,11 +13,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/eq-works-webapp" element={<App />}>
+      <Route path="/data-webapp" element={<App />}>
         <Route index element={<HomeScreen />} />
-        <Route path="/eq-works-webapp/graph" element={<GraphScreen />} />
-        <Route path="/eq-works-webapp/table" element={<TableScreen />} />
-        <Route path="/eq-works-webapp/map" element={<MapScreen />} />
+        <Route path="/data-webapp/graph" element={<GraphScreen />} />
+        <Route path="/data-webapp/table" element={<TableScreen />} />
+        <Route path="/data-webapp/map" element={<MapScreen />} />
       </Route>
     </Routes>
   </BrowserRouter>

@@ -18,16 +18,16 @@ function NavBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <LinkContainer to="/eq-works-webapp/" eventKey="1">
+            <LinkContainer to="/data-webapp/" eventKey="1">
               <Nav.Link>Home</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/eq-works-webapp/graph" eventKey="2">
+            <LinkContainer to="/data-webapp/graph" eventKey="2">
               <Nav.Link>Graph</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/eq-works-webapp/table" eventKey="3">
+            <LinkContainer to="/data-webapp/table" eventKey="3">
               <Nav.Link>Table</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/eq-works-webapp/map" eventKey="4">
+            <LinkContainer to="/data-webapp/map" eventKey="4">
               <Nav.Link>Map</Nav.Link>
             </LinkContainer>
           </Nav>
