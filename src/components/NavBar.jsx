@@ -14,7 +14,7 @@ function NavBar() {
               height="30"
               className="d-inline-block align-top"
             />{' '}
-          EQ Works Web App</Navbar.Brand>
+          Data Visualization Web App</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
